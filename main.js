@@ -53,6 +53,7 @@ async function init(useDebug) {
   }
 
   // add event listeners to the window
+  window.addEventListener("touchstart", onTouchStarted, false);
   window.addEventListener("click", onMouseClicked, false);
   window.addEventListener("resize", onWindowResize, false);
 
@@ -139,6 +140,41 @@ async function onMouseClicked(event) {
         return;
       } else {
         //hide 'choose remote' message
+        document.getElementById("choose-remote-message").style.display = "none";
+
+        composer = new EffectComposer(renderer);
+        composer.addPass(sim.renderPass);
+        composer.addPass(bloomPass);
+        composer.addPass(outputPass);
+
+        simActive = true;
+      }
+    }
+  } else {
+    sim.OnInput(location);
+  }
+}
+
+async function onTouchStarted(event) {
+  //prevent default behavior to avoid double triggering
+  event.preventDefault();
+
+  //retrieve touch location
+  let touch = event.touches[0];
+  let location = getNormalizedCoordinates(touch.clientX, touch.clientY);
+
+  if (simActive === false) {
+    let remoteChoice = choiceScreen.OnInput(location);
+    if (remoteChoice !== "") {
+      // Load simulation
+      sim = new Simulation();
+      let useNewRemote = remoteChoice === "new";
+      let simInitResult = await sim.Init(window, useNewRemote);
+      if (simInitResult === false) {
+        console.log("Error loading simulation");
+        return;
+      } else {
+        // Hide 'choose remote' message
         document.getElementById("choose-remote-message").style.display = "none";
 
         composer = new EffectComposer(renderer);
