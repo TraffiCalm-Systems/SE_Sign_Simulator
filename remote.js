@@ -137,7 +137,7 @@ export class Remote {
           this.buttons["stepright"] = button;
           break;
         case "Button_17":
-          this.buttons["menu"] = button;
+          this.buttons["enter"] = button;
           break;
         case "Button_18":
           this.buttons["stepdown"] = button;
@@ -179,7 +179,7 @@ export class Remote {
           this.buttons["0"] = button;
           break;
         case "Button_31":
-          this.buttons["enter"] = button;
+          this.buttons["menu"] = button;
           break;
         default:
           break;
