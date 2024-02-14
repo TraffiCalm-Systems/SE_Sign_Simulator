@@ -105,10 +105,10 @@ button:hover {
 
 #overlay {
   position:absolute;
-  top: 70px;
+  top: 90px;
   left:50%;
   transform:translate(-50%, 0%);
-  width: auto;
+  width: 80%;
   height: auto;
   max-height: 80%;
   overflow-y:auto;
