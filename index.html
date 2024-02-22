@@ -1,51 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, user-scalable=no" />
-    <title>Trafficalm Value Sign Simulation</title>
-    <link rel="stylesheet" href="style.css" />
-    <script
-      async
-      src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
-    ></script>
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@v0.153.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@v0.153.0/examples/jsm/",
-          "dat.gui": "https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/+esm"
-        }
-      }
-    </script>
-  </head>
-  <body>
-    <div class="button-bar">
-      <button
-        class="button-bar-button"
-        id="backButton"
-        class="button-bar-button"
-      ></button>
-      <button
-        class="button-bar-button"
-        id="helpButton"
-        style="visibility: hidden"
-      >
-        ?
-      </button>
-    </div>
-    <div id="choose-remote-message">Choose your remote</div>
-    <div id="canvas-container"></div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		<title>Trafficalm Value Sign Simulation</title>
+		<link rel="stylesheet" href="style.css" />
+		<script
+			async
+			src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
+		></script>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "https://unpkg.com/three@v0.153.0/build/three.module.js",
+					"three/addons/": "https://unpkg.com/three@v0.153.0/examples/jsm/",
+					"dat.gui": "https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/+esm"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="button-bar">
+			<button
+				class="button-bar-button"
+				id="backButton"
+				class="button-bar-button"
+			></button>
+			<button
+				class="button-bar-button"
+				id="helpButton"
+				style="visibility: hidden"
+			>
+				?
+			</button>
+		</div>
+		<div id="choose-remote-message" class="choose-title">Choose Layout</div>
+		<div id="canvas-container"></div>
 
-    <div id="overlay" class="glass fade-out">
-      <div id="title"></div>
-      <p id="explanation"></p>
-      <button id="nextButton">Next</button>
-    </div>
+		<div id="overlay" class="glass fade-out">
+			<div id="title"></div>
+			<p id="explanation"></p>
+			<button id="nextButton">Next</button>
+		</div>
 
-    <div id="loading-screen">
-      <div>Loading...</div>
-    </div>
-    <script type="module" src="./main.js"></script>
-  </body>
+		<div id="loading-screen">
+			<div>Loading...</div>
+		</div>
+		<script type="module" src="./main.js"></script>
+	</body>
 </html>
