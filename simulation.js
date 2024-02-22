@@ -170,7 +170,7 @@ export class Simulation {
 			endRemotePos = new THREE.Vector3(0, 0.081, -0.21);
 			endRemoteRot = new THREE.Euler(0.7, 0, 0);
 		} else {
-			endCameraPos = new THREE.Vector3(-0.21, -0, -2.175);
+			endCameraPos = new THREE.Vector3(-0.21, 0.04, -2.175);
 			endCameraRot = new THREE.Euler(6.3, 0, 0);
 			endRemotePos = new THREE.Vector3(0, 0.081, -2.175);
 			endRemoteRot = new THREE.Euler(0.7, 0, -8);
