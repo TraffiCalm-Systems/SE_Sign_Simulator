@@ -5,8 +5,9 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { Simulation } from "./simulation.js";
 import { ChoiceScreen } from "./choiceScreen.js";
 
-let renderer, debugUI, choiceScreen, sim, composer, bloomPass, outputPass;
+let renderer, debugUI, choiceScreen, composer, outputPass;
 let simActive = false;
+let sim = new Simulation();
 
 async function init(useDebug) {
 	//load choice screen
@@ -20,7 +21,7 @@ async function init(useDebug) {
 	//setup renderer
 	renderer = new THREE.WebGLRenderer({
 		antialias: true,
-		premultipliedAlpha: true,
+		premultipliedAlpha: false,
 	});
 
 	renderer.alpha = true;
@@ -106,30 +107,50 @@ function onWindowResize() {
 	composer.setSize(window.innerWidth, window.innerHeight);
 }
 
+async function initSim(useNewRemote) {
+	if (useNewRemote === true) {
+		let simInit1Result = await sim.Init(
+			window,
+			useNewRemote,
+			choiceScreen.remoteNew
+		);
+
+		if (simInit1Result === false) {
+			console.log("Error loading simulation");
+			return false;
+		}
+	} else {
+		let simInit2Result = await sim.Init(
+			window,
+			useNewRemote,
+			choiceScreen.remoteOld
+		);
+
+		if (simInit2Result === false) {
+			console.log("Error loading simulation");
+			return false;
+		}
+	}
+
+	//hide 'choose remote' message
+	document.getElementById("choose-remote-message").style.display = "none";
+
+	composer = new EffectComposer(renderer);
+	composer.addPass(sim.renderPass);
+	composer.addPass(outputPass);
+
+	simActive = true;
+
+	return true;
+}
+
 async function onMouseClicked(event) {
 	let location = getNormalizedCoordinates(event.clientX, event.clientY);
 
 	if (simActive === false) {
 		let remoteChoice = choiceScreen.OnInput(location);
 		if (remoteChoice !== "") {
-			//load simulation
-			sim = new Simulation();
-			let useNewRemote = remoteChoice === "new";
-			let simInitResult = await sim.Init(window, useNewRemote);
-			if (simInitResult === false) {
-				console.log("Error loading simulation");
-				return;
-			} else {
-				//hide 'choose remote' message
-				document.getElementById("choose-remote-message").style.display = "none";
-
-				composer = new EffectComposer(renderer);
-				composer.addPass(sim.renderPass);
-				//	composer.addPass(bloomPass);
-				composer.addPass(outputPass);
-
-				simActive = true;
-			}
+			initSim(remoteChoice === "new");
 		}
 	} else {
 		sim.OnInput(location);
@@ -138,7 +159,7 @@ async function onMouseClicked(event) {
 
 async function onTouchStarted(event) {
 	//prevent default behavior to avoid double triggering
-	event.preventDefault();
+	//event.preventDefault();
 
 	//retrieve touch location
 	let touch = event.touches[0];
@@ -147,30 +168,7 @@ async function onTouchStarted(event) {
 	if (simActive === false) {
 		let remoteChoice = choiceScreen.OnInput(location);
 		if (remoteChoice !== "") {
-			// Load simulation
-			sim = new Simulation();
-			let useNewRemote = remoteChoice === "new";
-
-			let simInitResult = await sim.Init(
-				window,
-				useNewRemote,
-				useNewRemote ? this.choiceScreen.remoteNew : this.choiceScreen.remoteOld
-			);
-
-			if (simInitResult === false) {
-				console.log("Error loading simulation");
-				return;
-			} else {
-				// Hide 'choose remote' message
-				document.getElementById("choose-remote-message").style.display = "none";
-
-				composer = new EffectComposer(renderer);
-				composer.addPass(sim.renderPass);
-				composer.addPass(bloomPass);
-				composer.addPass(outputPass);
-
-				simActive = true;
-			}
+			initSim(remoteChoice === "new");
 		}
 	} else {
 		sim.OnInput(location);
